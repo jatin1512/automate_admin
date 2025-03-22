@@ -1,0 +1,60 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Year</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <div class="input-group input-group-sm">
+                </div>
+              </h3>
+              <div class="card-tools">
+                <button [routerLink]="['/year/add-year']" class="btn btn-primary">Add Year</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let year of years; let i = index">
+                    <td>{{year.id}}</td>
+                    <td>{{year.year}}</td>
+                    <td class="action-button">
+                      <a *ngIf="year.status != 'approved'" class="mr-3"
+                        [routerLink]="['/year/edit-year/', year.id]" title="Edit Year">
+                        <i class="fas fa-pencil-alt"></i>
+                      </a>
+                      <a class="mr-3" data-toggle="modal" data-target="#modal-delete-product"
+                        (click)="onDelete(year)" title="Delete Year">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <label class="mt-3 no-record-found"
+                *ngIf="years && years.length === 0">{{translation.getLocalizedString('NO_RECORD_FOUND')}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

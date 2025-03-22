@@ -1,0 +1,24 @@
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+}
+.navbar-nav>.user-menu>.dropdown-menu {
+    width: 170px;
+}
+.logout {
+    cursor: pointer;
+}
+a:not([href]):not([tabindex]) {
+    color: #476c88;
+}
+.dropdown-menu li {
+    padding: 8px;
+    cursor: pointer;
+}
+.user-menu {
+    cursor: pointer;
+}
+.notifications {
+    padding: 10px;
+}

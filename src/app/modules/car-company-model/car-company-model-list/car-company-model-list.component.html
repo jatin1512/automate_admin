@@ -1,0 +1,64 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Car Company Model</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <div class="input-group input-group-sm">
+                </div>
+              </h3>
+              <div class="card-tools">
+                <button [routerLink]="['/car-company-model/add-car-company-model']" class="btn btn-primary">Add Car Company Model</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Car Year</th>
+                    <th>Car Company Name</th>
+                    <th>Car Model Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let carCompany of carCompanys; let i = index">
+                    <td>{{carCompany.id}}</td>
+                    <td>{{carCompany.modelyear.year}}</td>
+                    <td>{{carCompany.carcompany.name}}</td>
+                    <td>{{carCompany.name}}</td>
+                    <td class="action-button">
+                      <a class="mr-3"
+                        [routerLink]="['/car-company-model/edit-car-company-model/', carCompany.id]" title="Edit Car Company Model">
+                        <i class="fas fa-pencil-alt"></i>
+                      </a>
+                      <a class="mr-3" data-toggle="modal" data-target="#modal-delete-product"
+                        (click)="onDelete(carCompany)" title="Delete Car Company Model">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <label class="mt-3 no-record-found"
+                *ngIf="carCompanys && carCompanys.length === 0">{{translation.getLocalizedString('NO_RECORD_FOUND')}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

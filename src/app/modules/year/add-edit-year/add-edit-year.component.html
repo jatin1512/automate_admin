@@ -1,0 +1,38 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-12">
+          <h1 *ngIf="!yearId">New Year</h1>
+          <h1 *ngIf="yearId">Update Year</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card card-primary">
+          <form [formGroup]="form" (ngSubmit)="addPincode()">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="year">Year*</label>
+                <input type="text" formControlName="year" placeholder="Enter Year*" id="year"
+                  class="form-control" />
+                <app-validation-message [control]="form.controls['year']"
+                  [messages]="{'pattern': 'Invalid year. (i.e. 2024)'}">
+                </app-validation-message>
+              </div>
+            </div>
+            <app-spinner *ngIf="form.disabled"></app-spinner>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{yearId ? 'Update Year' : 'Add Year'}}</button>
+              <button type="button" class="btn btn-default float-right" (click)="cancel()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

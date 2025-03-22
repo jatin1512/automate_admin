@@ -1,0 +1,52 @@
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="dropdown user user-menu ml-3 mt-2">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="hidden-xs">{{translation.getLocalizedString('HELLO_ADMIN')}}</span>
+            </a>
+            <ul class="dropdown-menu text-center">
+                <li><a class="logout" data-toggle="modal"
+                        data-target="#modal-warning">{{translation.getLocalizedString('LOGOUT')}}</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<div class="modal fade" id="modal-warning">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{translation.getLocalizedString('ARE_YOU_SURE_YOU_WANT_TO_LOGOUT')}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mr-3"
+                    data-dismiss="modal">{{translation.getLocalizedString('NO')}}</button>
+                <button type="button" (click)="logout()" data-dismiss="modal"
+                    class="btn btn-primary">{{translation.getLocalizedString('YES')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{translation.getLocalizedString('COMINING_SOON')}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-primary"
+                    data-dismiss="modal">{{translation.getLocalizedString('OK')}}</button>
+            </div>
+        </div>
+    </div>
+</div>

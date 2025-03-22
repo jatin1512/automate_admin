@@ -1,0 +1,38 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-12">
+          <h1 *ngIf="!carCompanyId">New Car Company</h1>
+          <h1 *ngIf="carCompanyId">Update Car Company</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card card-primary">
+          <form [formGroup]="form" (ngSubmit)="addCarCompany()">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="name">Car Company Name*</label>
+                <input type="text" formControlName="name" placeholder="Enter Car Company Name*" id="name"
+                  class="form-control" />
+                <app-validation-message [control]="form.controls['name']"
+                  [messages]="{'pattern': 'Invalid name. (i.e. BMW)'}">
+                </app-validation-message>
+              </div>
+            </div>
+            <app-spinner *ngIf="form.disabled"></app-spinner>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{carCompanyId ? 'Update Car Company' : 'Add Car Company'}}</button>
+              <button type="button" class="btn btn-default float-right" (click)="cancel()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

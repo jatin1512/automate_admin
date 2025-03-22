@@ -1,0 +1,11 @@
+<div class="card-body">
+  <button class="btn btn-danger" (click)="confirmDelete = true" *ngIf="!confirmDelete">{{deleteBtnText}}</button>
+
+  <div *ngIf="confirmDelete">
+    {{deleteConfirmMsg}}
+    <div>
+      <button class="btn btn-danger" (click)="confirmDelete = false; onDelete()">Yes</button>
+      <button class="btn btn-info" (click)="confirmDelete = false" style="margin-left: 10px;">No</button>
+    </div>
+  </div>
+</div>

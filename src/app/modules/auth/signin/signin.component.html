@@ -1,0 +1,50 @@
+<div class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="../../../../assets/images/logo_new.png" width="300px">
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">{{translation.getLocalizedString('SIGN_IN_TO_START_YOUR_SESSION')}}</p>
+
+                <form [formGroup]="loginForm" (ngSubmit)="login()">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Email*" formControlName="email" #email
+                            maxlength="254" [ngClass]="{ 'is-invalid': isSubmitted && formControls['email'].errors }">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                        <div *ngIf="isSubmitted && formControls['email'].errors" class="error">
+                            <div *ngIf="formControls['email'].errors['required']">
+                                {{translation.getLocalizedString('EMAIL_REQUIRE')}}</div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input [type]="show ? 'text' : 'password'" class="form-control" placeholder="Password*"
+                            formControlName="password" maxlength="15"
+                            [ngClass]="{ 'is-invalid': isSubmitted && formControls['password'].errors }">
+                        <i *ngIf="!show" (click)="password()" class="fas fa-eye password-show"></i> <i *ngIf="show"
+                            (click)="password()" class="fas fa-eye-slash password-show"></i>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <div *ngIf="isSubmitted && formControls['password'].errors" class="error">
+                            <div *ngIf="formControls['password'].errors['required']">
+                                {{translation.getLocalizedString('PASSWORD_REQUIRE')}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="submit"
+                                class="btn btn-primary btn-block">{{translation.getLocalizedString('SIGNIN')}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

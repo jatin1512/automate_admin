@@ -1,0 +1,84 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-12">
+          <h1 *ngIf="!carCompanySubModelId">New Car Sub Model</h1>
+          <h1 *ngIf="carCompanySubModelId">Update Car Sub Model</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card card-primary">
+          <form [formGroup]="form" (ngSubmit)="addCarSubModel()">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="year">Car Company Sub Model Name*</label>
+                <input type="text" formControlName="name" placeholder="Enter Car Company Name*" id="name"
+                  class="form-control" />
+                <app-validation-message [control]="form.controls['name']"
+                  [messages]="{'pattern': 'Invalid name. (i.e. BMW)'}">
+                </app-validation-message>
+              </div>
+              <div class="form-group">
+                <label for="year">Car Comapny Model Name*</label>
+                <ng-select [items]="companyModelName" formControlName="modelId"
+                placeholder="Select Car Company Model Name*" bindLabel="name" bindValue="id" (change)="getYearComany($event)">
+              </ng-select>
+              <app-validation-message [control]="form.controls['modelId']"
+              [messages]="{'pattern': 'Please select car company name'}">
+            </app-validation-message>
+          </div>
+          <div class="form-group">
+            <label for="year">Car Year*</label>
+            <ng-select [items]="years" formControlName="modelYearId"
+                placeholder="Select Year*" bindLabel="year" bindValue="id" [readonly]="true">
+              </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="year">Car Comapny Name*</label>
+            <ng-select [items]="companyName" formControlName="carCompanyId"
+                placeholder="Select Car Company Name*" bindLabel="name" bindValue="id" [readonly]="true">
+              </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="year">Transmission</label>
+            <input type="text" formControlName="transmission" placeholder="Enter Transmission" id="transmission"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="year">Fuel Type</label>
+            <input type="text" formControlName="fuelType" placeholder="Enter Fuel Type" id="fuelType"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="year">Engine</label>
+            <input type="text" formControlName="engine" placeholder="Enter Engine" id="engine"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="year">Horse Power</label>
+            <input type="text" formControlName="horsePower" placeholder="Enter Horse Power" id="horsePower"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="year">Torque</label>
+            <input type="text" formControlName="torque" placeholder="Enter Torque" id="torque"
+              class="form-control" />
+          </div>
+        </div>
+            <app-spinner *ngIf="form.disabled"></app-spinner>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{carCompanySubModelId ? 'Update Car Sub Model' : 'Add Car Sub Model'}}</button>
+              <button type="button" class="btn btn-default float-right" (click)="cancel()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,14 @@
+.no-record-found {
+    width: 100%;
+    text-align: center;
+}
+.action-button a, .action-button div {
+    width: auto;
+    float: left;
+}
+a:not([href]):not([tabindex]) {
+    color: #476c88;
+}
+.card-body {
+    overflow-y: scroll;
+}

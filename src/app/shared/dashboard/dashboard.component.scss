@@ -1,0 +1,17 @@
+.dashboard {
+    background-color: #476c88!important;
+    color: #fff;
+}
+.white {
+    color: #fff;
+}
+.types {
+    text-transform: capitalize;
+}
+.form-control:disabled, .form-control[readonly] {
+    background-color: #fff;
+    opacity: 1;
+}
+.expired-time {
+    cursor: pointer;
+}

@@ -1,0 +1,25 @@
+.brand-link .brand-image {
+    margin-left: 0; 
+    margin-right: 0;
+    margin-top: 0px; 
+    max-height: auto;
+}
+.brand-link {
+    height: 65px;
+    background: #fff;
+}
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #476c88;
+}
+[class*=sidebar-dark-] .sidebar a {
+    color: #000;
+}
+[class*=sidebar-dark-] {
+    background-color: #fff;
+}
+[class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link.active {
+    color: #fff;
+}
+.nav-item {
+    cursor: pointer;
+}

@@ -1,0 +1,63 @@
+.error {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+    margin-left: 10px;
+
+}
+
+pagination {
+    float: right;
+}
+
+.btn-primary {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+    background-image: none !important;
+}
+
+.cp {
+    cursor: pointer;
+}
+
+ng-select.form-control.ng-touched.ng-invalid {
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+}
+
+ng-select.form-control {
+    padding: 0 !important;
+}
+
+bs-daterangepicker-container {
+    transform: translate3d(-319px, 38px, 0px) !important;
+}
+
+ng-select.ng-select-multiple {
+    .ng-option.ng-option-selected::before {
+        background-image: url('assets/images/checked-box.svg');
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-right: 5px;
+        content: "";
+        width: 12px;
+        height: 12px;
+    }
+
+    .ng-option:not(.ng-option-selected)::before {
+        background-image: url('assets/images/blank-square.svg');
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-right: 5px;
+        content: "";
+        width: 12px;
+        height: 12px;
+    }
+}
