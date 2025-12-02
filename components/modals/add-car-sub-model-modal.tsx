@@ -58,6 +58,7 @@ export default function AddCarSubModelModal({
   const [modelId, setModelId] = useState<string | number>(
     initial?.modelId ?? ""
   );
+  const [modelSearch, setModelSearch] = useState<string>("");
   const [name, setName] = useState(initial?.name ?? "");
   const [transmission, setTransmission] = useState(initial?.transmission ?? "");
   const [fuelType, setFuelType] = useState(initial?.fuelType ?? "");
@@ -114,7 +115,6 @@ export default function AddCarSubModelModal({
             <X size={24} />
           </button>
         </div>
-
         <div className="p-6 space-y-6">
           <div>
             <label className="text-sm font-medium mb-2 block">
@@ -128,11 +128,37 @@ export default function AddCarSubModelModal({
                 <SelectValue placeholder="Select a Model..." />
               </SelectTrigger>
               <SelectContent>
-                {models.map((m: any) => (
+                <div className="px-3 py-2 sticky top-0 bg-background border-b">
+                  <Input
+                    placeholder="Type to filter models..."
+                    value={modelSearch}
+                    onChange={(e) => setModelSearch(e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                {(modelSearch
+                  ? models.filter((m: any) =>
+                      (m.name || "")
+                        .toLowerCase()
+                        .includes(modelSearch.toLowerCase())
+                    )
+                  : models
+                ).map((m: any) => (
                   <SelectItem key={m.id} value={String(m.id)}>
                     {m.name}
                   </SelectItem>
                 ))}
+                {models.length > 0 &&
+                modelSearch &&
+                models.filter((m: any) =>
+                  (m.name || "")
+                    .toLowerCase()
+                    .includes(modelSearch.toLowerCase())
+                ).length === 0 ? (
+                  <div className="px-3 py-2 text-xs text-muted-foreground">
+                    No matching model found.
+                  </div>
+                ) : null}
               </SelectContent>
             </Select>
           </div>

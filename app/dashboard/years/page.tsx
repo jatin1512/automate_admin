@@ -52,7 +52,10 @@ export default function YearsPage() {
       const json = await res.json();
       const code = json?.code ?? (res.ok ? 200 : res.status);
       if (code === 200) {
-        setYears(json.data || []);
+        const sorted = (json.data || [])
+          .slice()
+          .sort((a: any, b: any) => (a.year || 0) - (b.year || 0));
+        setYears(sorted);
       } else {
         toast.error(json?.message || "Failed to load years");
       }
@@ -67,9 +70,9 @@ export default function YearsPage() {
     fetchYears();
   }, []);
 
-  const filteredYears = years.filter((y) =>
-    y.year.toString().includes(searchTerm)
-  );
+  const filteredYears = years
+    .filter((y) => y.year.toString().includes(searchTerm))
+    .sort((a, b) => a.year - b.year);
 
   const handleAddYear = async () => {
     if (!yearInput.trim()) return;
@@ -118,14 +121,54 @@ export default function YearsPage() {
       });
       const json = await res.json();
       const code = json?.code ?? (res.ok ? 200 : res.status);
-      if (code === 200) {
-        toast.success(json?.message || "Year deleted successfully");
-        await fetchYears();
-        return true;
-      } else {
+      if (code !== 200) {
         toast.error(json?.message || "Failed to delete year");
         return false;
       }
+
+      toast.success(json?.message || "Year deleted successfully");
+
+      try {
+        const modelsRes = await fetch(`${API_BASE}/car/all-car-model`, {
+          headers: token ? { authorization: token } : undefined,
+        });
+        const modelsJson = await modelsRes.json();
+        const modelsCode =
+          modelsJson?.code ?? (modelsRes.ok ? 200 : modelsRes.status);
+        if (modelsCode === 200) {
+          const models = Array.isArray(modelsJson.data)
+            ? modelsJson.data
+            : modelsJson.data?.data || [];
+          const companyIds = Array.from(
+            new Set(
+              models
+                .filter((m: any) => Number(m.modelYearId) === Number(id))
+                .map((m: any) => m.carCompanyId)
+                .filter(Boolean)
+            )
+          );
+
+          for (const companyId of companyIds) {
+            try {
+              const delCompanyRes = await fetch(
+                `${API_BASE}/car/car-company/${companyId}`,
+                {
+                  method: "DELETE",
+                  headers: token ? { authorization: token } : undefined,
+                }
+              );
+              await delCompanyRes.json();
+            } catch (e) {
+              toast.error(`Network error deleting company ${companyId}`);
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch models after deleting year:", e);
+      }
+
+      await fetchYears();
+      return true;
     } catch (err) {
       toast.error("Network error");
       return false;
@@ -140,7 +183,7 @@ export default function YearsPage() {
         className="flex items-center justify-between"
       >
         <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-          Manage Years
+          Years Management
         </h1>
       </motion.div>
 

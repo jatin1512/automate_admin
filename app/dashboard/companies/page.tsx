@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Plus, Edit2, Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import DeleteConfirmationModal from "@/components/modals/delete-confirmation-modal";
@@ -156,11 +157,8 @@ export default function CompaniesPage() {
       >
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-            Company Management
+            Companies Management
           </h1>
-          <p className="text-xs md:text-sm text-muted-foreground">
-            Manage, add, and edit company details.
-          </p>
         </div>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
@@ -236,7 +234,9 @@ export default function CompaniesPage() {
                             </div>
                           </td>
                           <td className="py-3 md:py-4 px-3 md:px-4 text-muted-foreground hidden sm:table-cell text-sm">
-                            {company.createdAt || company.createdDate || "-"}
+                            {formatDate(
+                              company.createdAt || company.createdDate
+                            )}
                           </td>
                           <td className="py-3 md:py-4 px-3 md:px-4">
                             <div className="flex gap-2 md:gap-3">

@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import DeleteConfirmationModal from "@/components/modals/delete-confirmation-modal";
-import { getFileUrl } from "@/lib/file-utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -123,11 +123,8 @@ export default function UsersPage() {
       >
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-            User Management
+            Users Management
           </h1>
-          <p className="text-xs md:text-sm text-muted-foreground">
-            View, search, and manage all users.
-          </p>
         </div>
       </motion.div>
 
@@ -170,7 +167,7 @@ export default function UsersPage() {
                     <th className="text-left py-2 md:py-3 px-3 md:px-4 text-xs font-semibold text-muted-foreground uppercase hidden sm:table-cell">
                       Email
                     </th>
-                    <th className="text-left py-2 md:py-3 px-3 md:px-4 text-xs font-semibold text-muted-foreground uppercase hidden md:table-cell">
+                    <th className="text-center py-2 md:py-3 px-3 md:px-4 text-xs font-semibold text-muted-foreground uppercase hidden md:table-cell">
                       Mobile No
                     </th>
                     <th className="text-left py-2 md:py-3 px-3 md:px-4 text-xs font-semibold text-muted-foreground uppercase hidden lg:table-cell">
@@ -263,7 +260,7 @@ export default function UsersPage() {
                             {loading ? (
                               <div className="h-4 bg-muted rounded w-28" />
                             ) : (
-                              user?.date_joined
+                              formatDate(user?.date_joined)
                             )}
                           </td>
                           <td className="py-3 md:py-4 px-3 md:px-4">

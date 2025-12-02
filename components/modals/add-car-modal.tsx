@@ -64,6 +64,7 @@ export default function AddCarModal({
   const [modelId, setModelId] = useState<string | number>(
     initial?.modelId ?? ""
   );
+  const [modelSearch, setModelSearch] = useState<string>("");
   const [subModelId, setSubModelId] = useState<string | number>(
     initial?.subModelId ?? ""
   );
@@ -309,11 +310,34 @@ export default function AddCarModal({
                   />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px] overflow-y-auto">
-                  {models.map((m: any) => (
-                    <SelectItem key={m.id} value={String(m.id)}>
-                      {m.name}
-                    </SelectItem>
-                  ))}
+                  <div className="sticky top-0 z-10 bg-white p-2 border-b">
+                    <Input
+                      placeholder="Search model..."
+                      value={modelSearch}
+                      onChange={(e) => setModelSearch(e.target.value)}
+                    />
+                  </div>
+                  {(() => {
+                    const filtered = modelSearch
+                      ? models.filter((m: any) =>
+                          (m.name || "")
+                            .toLowerCase()
+                            .includes(modelSearch.toLowerCase())
+                        )
+                      : models;
+                    if (filtered.length === 0) {
+                      return (
+                        <div className="p-2 text-xs text-muted-foreground">
+                          No matching model found.
+                        </div>
+                      );
+                    }
+                    return filtered.map((m: any) => (
+                      <SelectItem key={m.id} value={String(m.id)}>
+                        {m.name}
+                      </SelectItem>
+                    ));
+                  })()}
                 </SelectContent>
               </Select>
             </div>

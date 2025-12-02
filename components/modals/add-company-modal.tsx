@@ -81,7 +81,10 @@ export default function AddCompanyModal({
             {initial?.id ? "Edit Company" : "Add New Company"}
           </h2>
           <button
-            onClick={onClose}
+            onClick={() => {
+              setName("");
+              onClose();
+            }}
             className="text-muted-foreground hover:text-foreground"
           >
             <X size={24} />
@@ -102,7 +105,14 @@ export default function AddCompanyModal({
         </div>
 
         <div className="flex gap-4 p-6 border-t justify-end bg-gray-50">
-          <Button variant="outline" onClick={onClose} disabled={saving}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setName("");
+              onClose();
+            }}
+            disabled={saving}
+          >
             Cancel
           </Button>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
