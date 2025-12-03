@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --port=3001",
     "lint": "eslint .",
-    "start": "npm install && npm run build && next start -p ${PORT:-3001}",
+    "start": "npm install && npm run build && next start --port=3001",
     "deploy": "npm install --legacy-peer-deps && npm run build && npm start"
   },
   "dependencies": {

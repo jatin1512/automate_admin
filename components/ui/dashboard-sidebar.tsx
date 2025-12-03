@@ -130,7 +130,21 @@ export default function DashboardSidebar({
               <nav className="flex-1 overflow-y-auto py-4 md:py-6 px-2 md:px-3">
                 <div className="space-y-2">
                   {navigation.map((item, index) => {
-                    const isActive = pathname === item.href;
+                    const normalize = (p?: string | null) => {
+                      if (!p) return "";
+                      const noQuery = p.split(/[?#]/)[0];
+                      if (noQuery.length > 1 && noQuery.endsWith("/"))
+                        return noQuery.slice(0, -1);
+                      return noQuery;
+                    };
+
+                    const currentPath = normalize(pathname);
+                    const itemPath = normalize(item.href);
+
+                    const isActive =
+                      currentPath === itemPath ||
+                      (itemPath !== "" &&
+                        currentPath.startsWith(itemPath + "/"));
                     const Icon = item.icon as any;
 
                     return (
@@ -207,7 +221,20 @@ export default function DashboardSidebar({
         <nav className="flex-1 overflow-y-auto py-4 md:py-6 px-2 md:px-3">
           <div className="space-y-2">
             {navigation.map((item, index) => {
-              const isActive = pathname === item.href;
+              const normalize = (p?: string | null) => {
+                if (!p) return "";
+                const noQuery = p.split(/[?#]/)[0];
+                if (noQuery.length > 1 && noQuery.endsWith("/"))
+                  return noQuery.slice(0, -1);
+                return noQuery;
+              };
+
+              const currentPath = normalize(pathname);
+              const itemPath = normalize(item.href);
+
+              const isActive =
+                currentPath === itemPath ||
+                (itemPath !== "" && currentPath.startsWith(itemPath + "/"));
               const Icon = item.icon as any;
 
               return (
