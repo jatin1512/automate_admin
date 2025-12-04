@@ -15,6 +15,7 @@ import AddCarModal from "@/components/modals/add-car-modal";
 import DeleteConfirmationModal from "@/components/modals/delete-confirmation-modal";
 import CarViewModal from "@/components/modals/car-view-modal";
 import toast from "react-hot-toast";
+import { sortYearsAscending, sortCompaniesByName } from "@/lib/utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -96,12 +97,18 @@ export default function CarsPage() {
           (companiesRes.ok ? 200 : companiesRes.status)) === 200
       ) {
         setCompanies(
-          Array.isArray(companiesJson.data) ? companiesJson.data : []
+          sortCompaniesByName(
+            Array.isArray(companiesJson.data) ? companiesJson.data : []
+          )
         );
       }
 
       if ((yearsJson?.code ?? (yearsRes.ok ? 200 : yearsRes.status)) === 200) {
-        setYears(Array.isArray(yearsJson.data) ? yearsJson.data : []);
+        setYears(
+          sortYearsAscending(
+            Array.isArray(yearsJson.data) ? yearsJson.data : []
+          )
+        );
       }
     } catch (e) {
       console.error("Failed to load filters:", e);

@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Plus, Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -15,6 +15,7 @@ import AddEditCarModelModal from "@/components/modals/add-edit-car-model-modal";
 import DeleteConfirmationModal from "@/components/modals/delete-confirmation-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import toast from "react-hot-toast";
+import { sortYearsAscending, sortCompaniesByName } from "@/lib/utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -91,10 +92,10 @@ export default function CarModelsPage() {
       const [cJson, yJson] = await Promise.all([cRes.json(), yRes.json()]);
 
       const cCode = cJson?.code ?? (cRes.ok ? 200 : cRes.status);
-      if (cCode === 200) setCompanies(cJson.data || []);
+      if (cCode === 200) setCompanies(sortCompaniesByName(cJson.data || []));
 
       const yCode = yJson?.code ?? (yRes.ok ? 200 : yRes.status);
-      if (yCode === 200) setYears(yJson.data || []);
+      if (yCode === 200) setYears(sortYearsAscending(yJson.data || []));
     } catch (err) {
       console.error("Failed to load filters:", err);
     }
@@ -207,13 +208,13 @@ export default function CarModelsPage() {
 
       <div>
         <Card>
-          <CardContent className="">
-            <div className="flex flex-col md:flex-row flex-wrap gap-2 md:gap-4 items-start md:items-center">
+          <CardContent className="pt-4 md:pt-6">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center">
               <Select
                 value={filterCompany === "all" ? "all" : filterCompany}
                 onValueChange={(v) => setFilterCompany(v)}
               >
-                <SelectTrigger className="w-full sm:w-40 text-sm">
+                <SelectTrigger className="w-full sm:w-48 text-sm bg-gray-50">
                   <SelectValue placeholder="Filter by Company" />
                 </SelectTrigger>
                 <SelectContent>
@@ -230,7 +231,7 @@ export default function CarModelsPage() {
                 value={filterYear === "all" ? "all" : filterYear}
                 onValueChange={(v) => setFilterYear(v)}
               >
-                <SelectTrigger className="w-full sm:w-40 text-sm">
+                <SelectTrigger className="w-full sm:w-48 text-sm bg-gray-50">
                   <SelectValue placeholder="Filter by Year" />
                 </SelectTrigger>
                 <SelectContent>
@@ -243,10 +244,10 @@ export default function CarModelsPage() {
                 </SelectContent>
               </Select>
 
-              <div className="ml-auto">
+              <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto text-sm"
+                  className="flex-1 sm:flex-none text-sm"
                   onClick={resetFilters}
                 >
                   Reset

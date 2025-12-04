@@ -14,3 +14,13 @@ export function formatDate(value?: string | Date | null): string {
   const year = d.getFullYear();
   return `${day} ${month} ${year}`;
 }
+
+export function sortYearsAscending(years: Array<any>): Array<any> {
+  return [...years].sort((a, b) => (a.year || 0) - (b.year || 0));
+}
+
+export function sortCompaniesByName(companies: Array<any>): Array<any> {
+  return [...companies].sort((a, b) =>
+    (a.name || "").localeCompare(b.name || "")
+  );
+}

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import { sortYearsAscending, sortCompaniesByName } from "@/lib/utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -374,12 +375,15 @@ export default function AddCarModal({
               <Select
                 value={String(modelYearId ?? "")}
                 onValueChange={(v) => setModelYearId(v === "" ? "" : Number(v))}
+                disabled={!!modelId}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  className={modelId ? "opacity-50 cursor-not-allowed" : ""}
+                >
                   <SelectValue placeholder="Select Year" />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px] overflow-y-auto">
-                  {years.map((y: any) => (
+                  {sortYearsAscending(years).map((y: any) => (
                     <SelectItem
                       key={y.id ?? y.year}
                       value={String(y.id ?? y.year)}
@@ -397,12 +401,15 @@ export default function AddCarModal({
                 onValueChange={(v) =>
                   setCarCompanyId(v === "" ? "" : Number(v))
                 }
+                disabled={!!modelId}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  className={modelId ? "opacity-50 cursor-not-allowed" : ""}
+                >
                   <SelectValue placeholder="Select Company" />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px] overflow-y-auto">
-                  {companies.map((c: any) => (
+                  {sortCompaniesByName(companies).map((c: any) => (
                     <SelectItem key={c.id} value={String(c.id)}>
                       {c.name}
                     </SelectItem>

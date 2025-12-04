@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Plus, Eye, Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -16,6 +16,7 @@ import CarSubModelDetailsModal from "@/components/modals/car-sub-model-details-m
 import DeleteConfirmationModal from "@/components/modals/delete-confirmation-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import toast from "react-hot-toast";
+import { sortYearsAscending, sortCompaniesByName } from "@/lib/utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -109,10 +110,10 @@ export default function CarSubModelsPage() {
       ]);
 
       const cCode = cJson?.code ?? (cRes.ok ? 200 : cRes.status);
-      if (cCode === 200) setCompanies(cJson.data || []);
+      if (cCode === 200) setCompanies(sortCompaniesByName(cJson.data || []));
 
       const yCode = yJson?.code ?? (yRes.ok ? 200 : yRes.status);
-      if (yCode === 200) setYears(yJson.data || []);
+      if (yCode === 200) setYears(sortYearsAscending(yJson.data || []));
 
       const mCode = mJson?.code ?? (mRes.ok ? 200 : mRes.status);
       if (mCode === 200) {

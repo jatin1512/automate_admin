@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Plus, Edit2, Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "@/lib/utils";
+import { formatDate, sortCompaniesByName } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import DeleteConfirmationModal from "@/components/modals/delete-confirmation-modal";
@@ -46,7 +46,7 @@ export default function CompaniesPage() {
       });
       const json = await res.json();
       if (res.ok) {
-        setCompanies(json.data || []);
+        setCompanies(sortCompaniesByName(json.data || []));
       } else {
         toast.error(json.message || "Failed to load companies");
       }
@@ -123,8 +123,10 @@ export default function CompaniesPage() {
     }
   }
 
-  const filteredCompanies = companies.filter((company) =>
-    company.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCompanies = sortCompaniesByName(
+    companies.filter((company) =>
+      company.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   );
 
   const containerVariants: Variants = {

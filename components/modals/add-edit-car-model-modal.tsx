@@ -12,6 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  sortYearsAscending,
+  sortCompaniesByName,
+} from "@/lib/utils";
 
 interface Company {
   id: number;
@@ -118,7 +122,7 @@ export default function AddEditCarModelModal({
                 <SelectValue placeholder="Select company" />
               </SelectTrigger>
               <SelectContent>
-                {companies.map((c) => (
+                {sortCompaniesByName(companies).map((c) => (
                   <SelectItem key={c.id} value={String(c.id)}>
                     {c.name}
                   </SelectItem>
@@ -137,7 +141,7 @@ export default function AddEditCarModelModal({
                 <SelectValue placeholder="Select year" />
               </SelectTrigger>
               <SelectContent>
-                {years.map((y) => (
+                {sortYearsAscending(years).map((y) => (
                   <SelectItem key={y.id} value={String(y.id)}>
                     {y.year}
                   </SelectItem>

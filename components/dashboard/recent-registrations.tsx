@@ -44,14 +44,26 @@ export default function RecentRegistrationsTable({
                 : []
               ).map((reg: any, idx: number) => {
                 const key = reg?.id ?? idx;
-                const name =
+                const nameValue =
                   reg?.name ??
                   reg?.full_name ??
                   reg?.user_name ??
                   reg?.user ??
-                  "Unknown";
-                const email = reg?.email ?? reg?.user_email ?? "-";
-                const mobile = reg?.mobile_number ?? reg?.mobile ?? "-";
+                  null;
+                const name =
+                  nameValue && String(nameValue).trim()
+                    ? String(nameValue).trim()
+                    : "-";
+                const email =
+                  reg?.email && String(reg.email).trim()
+                    ? String(reg.email).trim()
+                    : "-";
+                const mobile =
+                  reg?.mobile_number && String(reg.mobile_number).trim()
+                    ? String(reg.mobile_number).trim()
+                    : reg?.mobile && String(reg.mobile).trim()
+                    ? String(reg.mobile).trim()
+                    : "-";
                 const rawDate = reg?.registration_date ?? reg?.date ?? null;
                 const date = rawDate ? formatDate(rawDate) : "-";
 

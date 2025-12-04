@@ -10,6 +10,7 @@ import DeleteConfirmationModal from "@/components/modals/delete-confirmation-mod
 import AddYearModal from "@/components/modals/add-year-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import toast from "react-hot-toast";
+import { sortYearsAscending } from "@/lib/utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -52,9 +53,7 @@ export default function YearsPage() {
       const json = await res.json();
       const code = json?.code ?? (res.ok ? 200 : res.status);
       if (code === 200) {
-        const sorted = (json.data || [])
-          .slice()
-          .sort((a: any, b: any) => (a.year || 0) - (b.year || 0));
+        const sorted = sortYearsAscending(json.data || []);
         setYears(sorted);
       } else {
         toast.error(json?.message || "Failed to load years");
@@ -127,46 +126,6 @@ export default function YearsPage() {
       }
 
       toast.success(json?.message || "Year deleted successfully");
-
-      try {
-        const modelsRes = await fetch(`${API_BASE}/car/all-car-model`, {
-          headers: token ? { authorization: token } : undefined,
-        });
-        const modelsJson = await modelsRes.json();
-        const modelsCode =
-          modelsJson?.code ?? (modelsRes.ok ? 200 : modelsRes.status);
-        if (modelsCode === 200) {
-          const models = Array.isArray(modelsJson.data)
-            ? modelsJson.data
-            : modelsJson.data?.data || [];
-          const companyIds = Array.from(
-            new Set(
-              models
-                .filter((m: any) => Number(m.modelYearId) === Number(id))
-                .map((m: any) => m.carCompanyId)
-                .filter(Boolean)
-            )
-          );
-
-          for (const companyId of companyIds) {
-            try {
-              const delCompanyRes = await fetch(
-                `${API_BASE}/car/car-company/${companyId}`,
-                {
-                  method: "DELETE",
-                  headers: token ? { authorization: token } : undefined,
-                }
-              );
-              await delCompanyRes.json();
-            } catch (e) {
-              toast.error(`Network error deleting company ${companyId}`);
-            }
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch models after deleting year:", e);
-      }
-
       await fetchYears();
       return true;
     } catch (err) {

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -25,8 +26,6 @@ const navigation = [
   { name: "Car Models", href: "/dashboard/car-models", icon: Zap },
   { name: "Car Sub Models", href: "/dashboard/car-sub-models", icon: Zap },
 ];
-
-import { useEffect, useState } from "react";
 
 export default function DashboardSidebar({
   sidebarOpen,
@@ -92,6 +91,93 @@ export default function DashboardSidebar({
     }
   };
 
+  const getIsActive = (itemHref: string) => {
+    if (!pathname) return false;
+
+    const normalize = (p: string) => {
+      if (!p) return "";
+      const noQuery = p.split(/[?#]/)[0];
+      if (noQuery.length > 1 && noQuery.endsWith("/"))
+        return noQuery.slice(0, -1);
+      return noQuery;
+    };
+
+    const currentPath = normalize(pathname);
+    const itemPath = normalize(itemHref);
+
+    return currentPath === itemPath;
+  };
+
+  const renderNavigation = () => (
+    <nav className="flex-1 overflow-y-auto py-4 md:py-6 px-2 md:px-3">
+      <div className="space-y-1">
+        {navigation.map((item, index) => {
+          const isActive = getIsActive(item.href);
+          const Icon = item.icon as any;
+
+          return (
+            <motion.div
+              key={item.href}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
+              onClick={() => {
+                if (sidebarOpen) setSidebarOpen(false);
+              }}
+            >
+              <Link href={item.href}>
+                <motion.button
+                  whileHover={{ x: 4 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-sm md:text-base font-medium ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                  }`}
+                >
+                  <Icon size={20} />
+                  <span>{item.name}</span>
+                </motion.button>
+              </Link>
+            </motion.div>
+          );
+        })}
+      </div>
+    </nav>
+  );
+
+  const renderUserSection = () => (
+    <div className="p-4 md:p-6 border-t border-border bg-card/50">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="flex items-center gap-3 p-3 md:p-4 rounded-lg mb-4"
+      >
+        <div className="w-10 h-10 bg-linear-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">
+          {userName?.charAt(0)?.toUpperCase() ?? "U"}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-medium text-sm text-foreground truncate">
+            {userName || "User"}
+          </p>
+          <p className="text-xs text-muted-foreground truncate">
+            {userEmail || ""}
+          </p>
+        </div>
+      </motion.div>
+
+      <Button
+        variant="outline"
+        className="w-full justify-start gap-2 text-sm md:text-base hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+        onClick={handleLogout}
+      >
+        <LogOut size={18} />
+        <span className="hidden sm:inline">Logout</span>
+      </Button>
+    </div>
+  );
+
   return (
     <>
       <AnimatePresence>
@@ -110,175 +196,39 @@ export default function DashboardSidebar({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -280, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col z-50 lg:hidden"
+              className="fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col z-50 lg:hidden shadow-xl"
             >
-              <div className="pt-6 border-b border-border">
+              <div className="pt-6 pb-4 border-b border-border bg-card/80 backdrop-blur-sm">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.1, type: "spring" }}
-                  className="flex items-center gap-3 justify-center"
+                  className="flex items-center justify-center"
                 >
                   <img
                     src="/logo.png"
                     alt="Automate Logo"
-                    className="w-36 mb-6"
+                    className="w-32 h-auto"
                   />
                 </motion.div>
               </div>
 
-              <nav className="flex-1 overflow-y-auto py-4 md:py-6 px-2 md:px-3">
-                <div className="space-y-2">
-                  {navigation.map((item, index) => {
-                    const normalize = (p?: string | null) => {
-                      if (!p) return "";
-                      const noQuery = p.split(/[?#]/)[0];
-                      if (noQuery.length > 1 && noQuery.endsWith("/"))
-                        return noQuery.slice(0, -1);
-                      return noQuery;
-                    };
-
-                    const currentPath = normalize(pathname);
-                    const itemPath = normalize(item.href);
-
-                    const isActive =
-                      currentPath === itemPath ||
-                      (itemPath !== "" &&
-                        currentPath.startsWith(itemPath + "/"));
-                    const Icon = item.icon as any;
-
-                    return (
-                      <motion.div
-                        key={item.href}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
-                        <Link
-                          href={item.href}
-                          onClick={() => setSidebarOpen(false)}
-                        >
-                          <motion.button
-                            whileHover={{ x: 4 }}
-                            whileTap={{ scale: 0.98 }}
-                            className={`w-full flex items-center gap-3 px-4 py-2 md:py-3 rounded-lg transition-all text-sm md:text-base ${
-                              isActive
-                                ? "bg-blue-600 text-white"
-                                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-                            }`}
-                          >
-                            <Icon size={20} />
-                            <span className="font-medium">{item.name}</span>
-                          </motion.button>
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </nav>
-
-              <div className="p-4 md:p-6 border-t border-border space-y-4">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="flex items-center gap-3 p-3 md:p-4 rounded-lg"
-                >
-                  <div className="w-10 h-10 bg-linear-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {userName?.charAt(0) ?? "A"}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm text-foreground">
-                      {userName}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {userEmail}
-                    </p>
-                  </div>
-                </motion.div>
-
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2 text-sm md:text-base"
-                  onClick={handleLogout}
-                >
-                  <LogOut size={18} />
-                  <span className="hidden sm:inline">Logout</span>
-                </Button>
-              </div>
+              {renderNavigation()}
+              {renderUserSection()}
             </motion.aside>
           </>
         )}
       </AnimatePresence>
 
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:relative lg:h-screen bg-card border-r border-border">
-        <div className="pt-6 border-b border-border">
-          <div className="flex items-center gap-3 justify-center">
-            <img src="/logo.png" alt="Automate Logo" className="w-36 mb-6" />
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:relative lg:h-screen bg-card border-r border-border shadow-sm">
+        <div className="pt-6 pb-4 border-b border-border bg-card/80 backdrop-blur-sm">
+          <div className="flex items-center justify-center px-4">
+            <img src="/logo.png" alt="Automate Logo" className="w-32 h-auto" />
           </div>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-4 md:py-6 px-2 md:px-3">
-          <div className="space-y-2">
-            {navigation.map((item, index) => {
-              const normalize = (p?: string | null) => {
-                if (!p) return "";
-                const noQuery = p.split(/[?#]/)[0];
-                if (noQuery.length > 1 && noQuery.endsWith("/"))
-                  return noQuery.slice(0, -1);
-                return noQuery;
-              };
-
-              const currentPath = normalize(pathname);
-              const itemPath = normalize(item.href);
-
-              const isActive =
-                currentPath === itemPath ||
-                (itemPath !== "" && currentPath.startsWith(itemPath + "/"));
-              const Icon = item.icon as any;
-
-              return (
-                <div key={item.href} className="">
-                  <Link href={item.href} onClick={() => setSidebarOpen(false)}>
-                    <button
-                      className={`w-full flex items-center gap-3 px-4 py-2 md:py-3 rounded-lg transition-all text-sm md:text-base ${
-                        isActive
-                          ? "bg-blue-600 text-white"
-                          : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-                      }`}
-                    >
-                      <Icon size={20} />
-                      <span className="font-medium">{item.name}</span>
-                    </button>
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
-        </nav>
-
-        <div className="p-4 md:p-6 border-t border-border space-y-4">
-          <div className="flex items-center gap-3 p-3 md:p-4 rounded-lg">
-            <div className="w-10 h-10 bg-linear-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-              {userName?.charAt(0) ?? "A"}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm text-foreground">{userName}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {userEmail}
-              </p>
-            </div>
-          </div>
-
-          <Button
-            variant="outline"
-            className="w-full justify-start gap-2 text-sm md:text-base"
-            onClick={handleLogout}
-          >
-            <LogOut size={18} />
-            <span className="hidden sm:inline">Logout</span>
-          </Button>
-        </div>
+        {renderNavigation()}
+        {renderUserSection()}
       </aside>
     </>
   );
