@@ -291,14 +291,14 @@ export default function CarSubModelsPage() {
       <div>
         <Card>
           <CardContent className="pt-4 md:pt-6">
-            <div className="flex flex-col md:flex-row flex-wrap gap-2 md:gap-4 items-start md:items-center justify-between w-full">
-              <div className="flex flex-wrap gap-2 md:gap-4 items-center">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center justify-between w-full">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center">
                 <Select value={filterYear} onValueChange={setFilterYear}>
-                  <SelectTrigger className="w-full sm:w-40 text-sm">
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
                     <SelectValue placeholder="Filter by Year" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Years</SelectItem>
+                    <SelectItem value="all">Filter by Year</SelectItem>
                     {years.map((y: any) => (
                       <SelectItem key={y.id} value={String(y.id)}>
                         {y.year}
@@ -308,11 +308,11 @@ export default function CarSubModelsPage() {
                 </Select>
 
                 <Select value={filterCompany} onValueChange={setFilterCompany}>
-                  <SelectTrigger className="w-full sm:w-40 text-sm">
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
                     <SelectValue placeholder="Filter by Company" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Companies</SelectItem>
+                    <SelectItem value="all">Filter by Company</SelectItem>
                     {companies.map((c: any) => (
                       <SelectItem key={c.id} value={String(c.id)}>
                         {c.name}
@@ -322,11 +322,11 @@ export default function CarSubModelsPage() {
                 </Select>
 
                 <Select value={filterModel} onValueChange={setFilterModel}>
-                  <SelectTrigger className="w-full sm:w-40 text-sm">
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
                     <SelectValue placeholder="Filter by Car Model" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Models</SelectItem>
+                    <SelectItem value="all">Filter by Car Model</SelectItem>
                     {models.map((m: any) => (
                       <SelectItem key={m.id} value={String(m.id)}>
                         {m.name}
@@ -334,35 +334,15 @@ export default function CarSubModelsPage() {
                     ))}
                   </SelectContent>
                 </Select>
-
-                <Button
-                  variant="outline"
-                  onClick={clearFilters}
-                  className="w-full sm:w-auto text-sm"
-                >
-                  Clear Filters
-                </Button>
               </div>
 
-              <div className="flex items-center gap-2">
-                <label className="text-xs text-muted-foreground whitespace-nowrap">
-                  Show
-                </label>
-                <select
-                  value={limit}
-                  onChange={(e) => {
-                    const v = Number(e.target.value) || 20;
-                    setLimit(v);
-                    setPage(1);
-                  }}
-                  className="text-sm bg-background border border-border rounded px-2 py-1"
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button
+                  className="flex-1 sm:flex-none bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm"
+                  onClick={clearFilters}
                 >
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                  <option value={100}>100</option>
-                  <option value={150}>150</option>
-                  <option value={200}>200</option>
-                </select>
+                  Reset
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -428,7 +408,7 @@ export default function CarSubModelsPage() {
                           <td className="py-3 md:py-4 px-3 md:px-4 font-medium text-foreground text-sm">
                             {model.name}
                           </td>
-                          <td className="py-3 md:py-4 px-3 md:px-4 text-blue-600 hidden sm:table-cell text-sm">
+                          <td className="py-3 md:py-4 px-3 md:px-4 text-foreground hidden sm:table-cell text-sm">
                             {model.model?.name}
                           </td>
                           <td className="py-3 md:py-4 px-3 md:px-4 text-muted-foreground hidden md:table-cell text-sm">
@@ -474,6 +454,13 @@ export default function CarSubModelsPage() {
                   )}
                 </tbody>
               </table>
+              {!loading && filteredSubModels.length === 0 && (
+                <div className="text-center py-6">
+                  <p className="text-muted-foreground text-sm">
+                    No car sub models found for selected filters.
+                  </p>
+                </div>
+              )}
             </div>
 
             {pagination && (
@@ -558,6 +545,24 @@ export default function CarSubModelsPage() {
                   >
                     →
                   </Button>
+                  <div className="ml-4">
+                    <Select
+                      onValueChange={(v) => {
+                        setLimit(Number(v));
+                        setPage(1);
+                      }}
+                    >
+                      <SelectTrigger className="w-20 text-sm">
+                        <SelectValue placeholder={`${limit}`} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="20">20</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                        <SelectItem value="100">100</SelectItem>
+                        <SelectItem value="150">150</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             )}

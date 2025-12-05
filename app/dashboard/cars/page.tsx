@@ -260,8 +260,8 @@ export default function CarsPage() {
       <div>
         <Card>
           <CardContent className="pt-4 md:pt-6">
-            <div className="flex flex-col md:flex-row flex-wrap gap-2 md:gap-4 items-start md:items-center justify-between w-full">
-              <div className="flex flex-wrap gap-2 md:gap-4 items-center">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center justify-between w-full">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center">
                 <Select
                   value={filterYear}
                   onValueChange={(val) => {
@@ -272,11 +272,11 @@ export default function CarsPage() {
                     }
                   }}
                 >
-                  <SelectTrigger className="w-full sm:w-40 text-sm">
-                    <SelectValue placeholder="Year: All" />
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
+                    <SelectValue placeholder="Filter by Year" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Years</SelectItem>
+                    <SelectItem value="all">Filter by Year</SelectItem>
                     {years.map((y: any) => (
                       <SelectItem key={y.id} value={String(y.id)}>
                         {y.year}
@@ -295,11 +295,11 @@ export default function CarsPage() {
                     }
                   }}
                 >
-                  <SelectTrigger className="w-full sm:w-40 text-sm">
-                    <SelectValue placeholder="Company: All" />
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
+                    <SelectValue placeholder="Filter by Company" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Companies</SelectItem>
+                    <SelectItem value="all">Filter by Company</SelectItem>
                     {companies.map((c: any) => (
                       <SelectItem key={c.id} value={String(c.id)}>
                         {c.name}
@@ -307,13 +307,14 @@ export default function CarsPage() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
 
+              <div className="flex gap-2 w-full sm:w-auto">
                 <Button
-                  variant="outline"
-                  className="w-full sm:w-auto text-sm"
+                  className="flex-1 sm:flex-none bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm"
                   onClick={clearFilters}
                 >
-                  Clear Filters
+                  Reset
                 </Button>
               </div>
             </div>
@@ -439,6 +440,13 @@ export default function CarsPage() {
                   })}
                 </tbody>
               </table>
+              {!loading && filteredCars.length === 0 && (
+                <div className="text-center py-6">
+                  <p className="text-muted-foreground text-sm">
+                    No cars found for selected filters.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="mt-4 md:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">

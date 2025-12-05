@@ -209,45 +209,46 @@ export default function CarModelsPage() {
       <div>
         <Card>
           <CardContent className="pt-4 md:pt-6">
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center">
-              <Select
-                value={filterCompany === "all" ? "all" : filterCompany}
-                onValueChange={(v) => setFilterCompany(v)}
-              >
-                <SelectTrigger className="w-full sm:w-48 text-sm bg-gray-50">
-                  <SelectValue placeholder="Filter by Company" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Filter by Companies</SelectItem>
-                  {companies.map((c) => (
-                    <SelectItem key={c.id} value={String(c.id)}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center justify-between">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 items-start sm:items-center">
+                <Select
+                  value={filterCompany === "all" ? "all" : filterCompany}
+                  onValueChange={(v) => setFilterCompany(v)}
+                >
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
+                    <SelectValue placeholder="Filter by Company" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Filter by Companies</SelectItem>
+                    {companies.map((c) => (
+                      <SelectItem key={c.id} value={String(c.id)}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-              <Select
-                value={filterYear === "all" ? "all" : filterYear}
-                onValueChange={(v) => setFilterYear(v)}
-              >
-                <SelectTrigger className="w-full sm:w-48 text-sm bg-gray-50">
-                  <SelectValue placeholder="Filter by Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Filter by Years</SelectItem>
-                  {years.map((y) => (
-                    <SelectItem key={y.id} value={String(y.id)}>
-                      {y.year}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <Select
+                  value={filterYear === "all" ? "all" : filterYear}
+                  onValueChange={(v) => setFilterYear(v)}
+                >
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
+                    <SelectValue placeholder="Filter by Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Filter by Years</SelectItem>
+                    {years.map((y) => (
+                      <SelectItem key={y.id} value={String(y.id)}>
+                        {y.year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-              <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
+              <div className="flex gap-2 w-full sm:w-auto">
                 <Button
-                  variant="outline"
-                  className="flex-1 sm:flex-none text-sm"
+                  className="flex-1 sm:flex-none bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm"
                   onClick={resetFilters}
                 >
                   Reset
